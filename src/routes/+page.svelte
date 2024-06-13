@@ -4,6 +4,7 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import { Sun, Moon, Github, Linkedin, Facebook, Twitter, Mail, Download } from 'lucide-svelte';
+	import { ProjectCard } from '$lib/components/mirror/project-card';
 
 	const { githubHandler, profilePicture, Name, Description } = config;
 
@@ -121,8 +122,50 @@
 		class="mx-auto max-w-[1000px] flex flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
 	>
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
-		<div class="">
+		<div class="w-full grid grid-cols-2 gap-4">
 			<!-- Card -->
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
+			<ProjectCard
+				name="Mirror"
+				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
+				star={50}
+				fork={50}
+				lang="Javascript"
+			/>
 		</div>
 	</div>
 </div>
