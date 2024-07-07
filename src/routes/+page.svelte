@@ -3,8 +3,20 @@
 	import { config } from '../config/config';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
-	import { Sun, Moon, Github, Linkedin, Facebook, Twitter, Mail, Download, Star, GitFork } from 'lucide-svelte';
+	import {
+		Sun,
+		Moon,
+		Github,
+		Linkedin,
+		Facebook,
+		Twitter,
+		Mail,
+		Download,
+		Star,
+		GitFork
+	} from 'lucide-svelte';
 	import { ProjectCard } from '$lib/components/mirror/project-card';
+	import { Meteor } from '$lib/components/mirror/meteor';
 
 	const { githubHandler, profilePicture, Name, Description } = config;
 
@@ -61,39 +73,41 @@
 </header>
 
 <div id="mirror-content" class="container">
-	<!-- Main section -->
-	<div
-		class="mx-auto flex max-w-[1000px] flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
-	>
-		<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
-		<!-- Name -->
-		<h1 class="text-xl/6 font-bold">{Name}</h1>
-		<!-- Description -->
-		<span class="text-center text-pretty">{Description}</span>
-		<!-- Social Toolbar -->
-		<div class="flex space-x-2">
-			{#each Object.entries(socialMap) as [socialKey, Icon]}
-				{#if config[socialKey] && config[socialKey] !== ''}
-					<Tooltip.Root>
-						<Tooltip.Trigger>
-							<Button
-								variant="outline"
-								size="icon"
-								class="h-8 w-8"
-								on:click={() => {
-									console.log(config[socialKey]);
-									console.log(socialKey);
-								}}><Icon size={16} /></Button
-							>
-						</Tooltip.Trigger>
-						<Tooltip.Content>{socialKey}</Tooltip.Content>
-					</Tooltip.Root>
-				{/if}
-			{/each}
+	<Meteor>
+		<!-- Main section -->
+		<div
+			class="mx-auto flex max-w-[1000px] flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
+		>
+			<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
+			<!-- Name -->
+			<h1 class="text-xl/6 font-bold">{Name}</h1>
+			<!-- Description -->
+			<span class="text-center text-pretty">{Description}</span>
+			<!-- Social Toolbar -->
+			<div class="flex space-x-2">
+				{#each Object.entries(socialMap) as [socialKey, Icon]}
+					{#if config[socialKey] && config[socialKey] !== ''}
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<Button
+									variant="outline"
+									size="icon"
+									class="h-8 w-8"
+									on:click={() => {
+										console.log(config[socialKey]);
+										console.log(socialKey);
+									}}><Icon size={16} /></Button
+								>
+							</Tooltip.Trigger>
+							<Tooltip.Content>{socialKey}</Tooltip.Content>
+						</Tooltip.Root>
+					{/if}
+				{/each}
+			</div>
+			<!-- Get resume button -->
+			<Button><Download class="mr-2 h-4 w-4" />RESUME</Button>
 		</div>
-		<!-- Get resume button -->
-		<Button><Download class="mr-2 h-4 w-4" />RESUME</Button>
-	</div>
+	</Meteor>
 
 	<!-- Command line styled personal details -->
 	<div
@@ -170,12 +184,26 @@
 	</div>
 </div>
 
+<!-- Footer -->
 <footer class="w-full border-t-2 p-4">
 	<div class="container flex justify-between max-w-screen-2xl items-center text-muted-foreground">
-		<div>Built & designed with 💙 by <a href="https://github.com/songlim327" class="underline font-medium hover:text-foreground hover:cursor-pointer">songlim327</a></div>
+		<div>
+			Built & designed with 💙 by <a
+				href="https://github.com/songlim327"
+				class="underline font-medium hover:text-foreground hover:cursor-pointer">songlim327</a
+			>
+		</div>
 		<div class="flex gap-4">
-			<div class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"><Star class="h-4 w-4" />Star</div>
-			<div class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"><GitFork class="h-4 w-4" />Fork</div>
+			<div
+				class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+			>
+				<Star class="h-4 w-4" />Star
+			</div>
+			<div
+				class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+			>
+				<GitFork class="h-4 w-4" />Fork
+			</div>
 		</div>
 	</div>
 </footer>
