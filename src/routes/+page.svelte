@@ -18,7 +18,18 @@
 	import { ProjectCard } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 
-	const { githubHandler, profilePicture, Name, Description } = config;
+	const {
+		profilePicture,
+		name,
+		description,
+		github,
+		linkedin,
+		facebook,
+		twitter,
+		email,
+		resume,
+		location
+	} = config;
 
 	type iconType = typeof Sun;
 	const socialMap: Record<string, iconType> = {
@@ -28,8 +39,14 @@
 		email: Mail
 	} as const;
 
-	const navigateToGitHub = () => {
-		window.open(`https://github.com/${githubHandler}`, '_blank');
+	// openGithub navigate to github profile
+	const openGitHub = () => {
+		window.open(`https://github.com/${github}`, '_blank');
+	};
+
+	// openResume navigate to specified resume url
+	const openResume = () => {
+		window.open(resume, '_blank');
 	};
 </script>
 
@@ -38,13 +55,13 @@
 >
 	<div class="container flex h-16 max-w-screen-2xl items-center mx-auto">
 		<div class="mr-4 md:flex">
-			<span class="text-lg font-bold sm:inline-block">@{githubHandler}</span>
+			<span class="text-lg font-bold sm:inline-block">@{github}</span>
 		</div>
 		<div class="flex flex-1 items-center justify-end">
 			<nav class="flex items-center space-x-2">
 				<Tooltip.Root>
 					<Tooltip.Trigger>
-						<Button variant="ghost" size="icon" on:click={navigateToGitHub}>
+						<Button variant="ghost" size="icon" on:click={openGitHub}>
 							<Github size={28} />
 						</Button>
 					</Tooltip.Trigger>
@@ -80,9 +97,9 @@
 		>
 			<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
 			<!-- Name -->
-			<h1 class="text-xl/6 font-bold">{Name}</h1>
+			<h1 class="text-xl/6 font-bold">{name}</h1>
 			<!-- Description -->
-			<span class="text-center text-pretty">{Description}</span>
+			<span class="text-center text-pretty">{description}</span>
 			<!-- Social Toolbar -->
 			<div class="flex space-x-2">
 				{#each Object.entries(socialMap) as [socialKey, Icon]}
@@ -105,7 +122,7 @@
 				{/each}
 			</div>
 			<!-- Get resume button -->
-			<Button><Download class="mr-2 h-4 w-4" />RESUME</Button>
+			<Button on:click={openResume}><Download class="mr-2 h-4 w-4" />RESUME</Button>
 		</div>
 	</Meteor>
 
@@ -124,10 +141,18 @@
 					<span class="rounded-full p-2 bg-[#febc2e]"></span>
 					<span class="rounded-full p-2 bg-[#28c940]"></span>
 				</div>
-				<div class="flex-1 font-bold dark:text-stone-800/90">-{githubHandler}</div>
+				<div class="flex-1 font-bold dark:text-stone-800/90">-{github}</div>
 			</div>
 			<!-- Terminal body (personal detail json) -->
-			<div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div>
+			<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
+			<div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
+				Loading geek info.... <br/>
+				name: {name} <br/>
+				location: {location} <br/>
+				repositories: {name} <br/>
+				skills: {name} <br/>
+				hireable: {true} <br/>
+			</div>
 		</div>
 	</div>
 
@@ -196,14 +221,23 @@
 		<div class="flex gap-4">
 			<div
 				class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
-			>
-				<Star class="h-4 w-4" />Star
-			</div>
-			<div
-				class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
-			>
-				<GitFork class="h-4 w-4" />Fork
-			</div>
+			></div>
+			<Tooltip.Root>
+				<Tooltip.Trigger
+					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+				>
+					<Star class="h-4 w-4" />Star
+				</Tooltip.Trigger>
+				<Tooltip.Content>Star on Github</Tooltip.Content>
+			</Tooltip.Root>
+			<Tooltip.Root>
+				<Tooltip.Trigger
+					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+				>
+					<GitFork class="h-4 w-4" />Fork
+				</Tooltip.Trigger>
+				<Tooltip.Content>Fork on Github</Tooltip.Content>
+			</Tooltip.Root>
 		</div>
 	</div>
 </footer>

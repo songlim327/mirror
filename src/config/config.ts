@@ -1,11 +1,13 @@
 export const config: Record<string, string> = {
 	profilePicture: 'https://avatars.githubusercontent.com/u/36408539?v=4',
-	Name: 'Song Lim',
-	Description:
+	name: 'Song Lim',
+	description:
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-	githubHandler: 'songlim327',
-	linkedin: '',
+	github: 'songlim327',
+	linkedin: 'https://www.linkedin.com/in/songlim-327/',
 	facebook: '',
-	twitter: '',
+	twitter: 'https://x.com/songlim666',
 	email: 'songlim327@gmail.com',
+	resume: '',
+	location: 'Malaysia'
 } as const;
