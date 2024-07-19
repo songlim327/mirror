@@ -1,31 +1,70 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/badge';
 	import { Github, Star, GitFork } from 'lucide-svelte';
+	import GithubImg from '$lib/assets/github.png';
+	import Action from './action.svelte';
 
 	let name: string;
 	let desc: string;
-	let star: Number;
-	let fork: Number;
+	let star: number;
+	let fork: number;
 	let lang: string;
+	let url: string;
 
-	export { name, desc, star, fork, lang };
+	export { name, desc, star, fork, lang, url };
+
+	// openRepository opens the respository in a new tab
+	const openRepository = () => {
+		window.open(url, '_blank');
+	};
 </script>
 
-<div class="grid grid-cols-6 gap-2 w-full rounded-md p-4 border border-yellow-200">
-	<div class="col-span-5 font-semibold">{name}</div>
-	<div class="col-span-1"><Github size={28} class="float-end border rounded-full p-1" /></div>
-	<div class="col-span-6 text-sm text-gray-400">
-		{desc}
-	</div>
-	<div class="col-span-6"><Badge variant="outline">{lang}</Badge></div>
-	<div class="col-span-6 flex space-x-2 mt-4">
-		<div class="flex space-x-1">
-			<Star size={16} />
-			<span class="text-xs">{star}</span>
+<!-- Hover background image -->
+<button class="text-start" on:click={openRepository}>
+	<div
+		class="relative w-full rounded-md p-6 border border-gray-300 dark:border-gray-500 group/card hover:cursor-pointer"
+	>
+		<div class="absolute inset-0.5 -z-50">
+			<img
+				src={GithubImg}
+				alt="Github"
+				class="w-full h-full object-cover opacity-0 transition-opacity rounded-md group-hover/card:opacity-10 group-hover/card:transition-opacity group-hover/card:ease-in group-hover/card:duration-500"
+			/>
 		</div>
-		<div class="flex space-x-1">
-			<GitFork size={16} />
-			<span class="text-xs">{fork}</span>
+		<div class="grid grid-cols-6 gap-2">
+			<div
+				class="col-span-5 font-bold text-xl group-hover/card:underline group-hover/card:underline-offset-4 group-hover/card:decoration-2"
+			>
+				{name}
+			</div>
+			<div class="col-span-1">
+				<Github
+					size={32}
+					class="float-end border rounded-full p-1 group-hover/card:opacity-0 group-hover/card:transition-opacity group-hover/card:ease-out group-hover/card:duration-500"
+				/>
+			</div>
+			<div class="col-span-6 text-sm text-gray-600 dark:text-gray-400">
+				{desc}
+			</div>
+			<div class="col-span-6 mt-2 -left-1">
+				<Badge
+					variant="outline"
+					class="text-gray-600 dark:text-gray-400 group-hover/card:border-gray-600">{lang}</Badge
+				>
+			</div>
+			{#if star > 0 || fork > 0}
+				<div class="col-span-6 flex space-x-4 mt-6">
+					{#if star > 0}
+						<Action value={star}>
+							<Star size={20} />
+						</Action>{/if}
+					{#if fork > 0}
+						<Action value={fork}>
+							<GitFork size={20} />
+						</Action>
+					{/if}
+				</div>
+			{/if}
 		</div>
 	</div>
-</div>
+</button>

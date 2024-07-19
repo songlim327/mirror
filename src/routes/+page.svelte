@@ -146,12 +146,12 @@
 			<!-- Terminal body (personal detail json) -->
 			<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
 			<div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
-				Loading geek info.... <br/>
-				name: {name} <br/>
-				location: {location} <br/>
-				repositories: {name} <br/>
-				skills: {name} <br/>
-				hireable: {true} <br/>
+				Loading geek info.... <br />
+				name: {name} <br />
+				location: {location} <br />
+				repositories: {name} <br />
+				skills: {name} <br />
+				hireable: {true} <br />
 			</div>
 		</div>
 	</div>
@@ -161,7 +161,7 @@
 		class="mx-auto max-w-[1000px] flex flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
 	>
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
-		<div class="w-full grid grid-cols-2 gap-4">
+		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
 			<ProjectCard
 				name="Mirror"
@@ -169,41 +169,7 @@
 				star={50}
 				fork={50}
 				lang="Javascript"
-			/>
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
-			/>
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
-			/>
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
-			/>
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
-			/>
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
+				url="test"
 			/>
 		</div>
 	</div>
