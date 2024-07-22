@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { toggleMode } from 'mode-watcher';
 	import { config } from '../config/config';
+	import { repos, topSixRepos } from '$lib/store';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -38,6 +40,18 @@
 		twitter: Twitter,
 		email: Mail
 	} as const;
+
+	onMount(async () => {
+		fetch(`https://api.github.com/users/${github}/repos?sort=pushed&type=public`)
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				repos.set(data);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	});
 
 	// openGithub navigate to github profile
 	const openGitHub = () => {
@@ -163,14 +177,16 @@
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
 		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
-			<ProjectCard
-				name="Mirror"
-				desc="A personal portfolio project which has relatively long description, hope it wraps pretty"
-				star={50}
-				fork={50}
-				lang="Javascript"
-				url="test"
-			/>
+			{#each $topSixRepos as repo}
+				<ProjectCard
+					name={repo.name}
+					desc={repo.description}
+					star={repo.stargazers_count}
+					fork={repo.forks_count}
+					lang={repo.language}
+					url={repo.html_url}
+				/>
+			{/each}
 		</div>
 	</div>
 </div>

@@ -43,7 +43,7 @@
 					class="float-end border rounded-full p-1 group-hover/card:opacity-0 group-hover/card:transition-opacity group-hover/card:ease-out group-hover/card:duration-500"
 				/>
 			</div>
-			<div class="col-span-6 text-sm text-gray-600 dark:text-gray-400">
+			<div class="col-span-6 text-sm line-clamp-1 text-gray-600 dark:text-gray-400">
 				{desc}
 			</div>
 			<div class="col-span-6 mt-2 -left-1">
@@ -52,19 +52,14 @@
 					class="text-gray-600 dark:text-gray-400 group-hover/card:border-gray-600">{lang}</Badge
 				>
 			</div>
-			{#if star > 0 || fork > 0}
-				<div class="col-span-6 flex space-x-4 mt-6">
-					{#if star > 0}
-						<Action value={star}>
-							<Star size={20} />
-						</Action>{/if}
-					{#if fork > 0}
-						<Action value={fork}>
-							<GitFork size={20} />
-						</Action>
-					{/if}
-				</div>
-			{/if}
+			<div class="col-span-6 flex space-x-4 mt-6">
+				<Action value={star}>
+					<Star size={20} />
+				</Action>
+				<Action value={fork}>
+					<GitFork size={20} />
+				</Action>
+			</div>
 		</div>
 	</div>
 </button>
