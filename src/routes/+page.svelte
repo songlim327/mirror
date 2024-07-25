@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { toggleMode } from 'mode-watcher';
 	import { config } from '../config/config';
-	import { repos, topSixRepos } from '$lib/store';
+	import { repos, topRepos, topLangs, reposCount } from '$lib/store';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -19,6 +19,7 @@
 	} from 'lucide-svelte';
 	import { ProjectCard } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
+	import { Terminal } from '$lib/components/mirror/terminal';
 
 	const {
 		profilePicture,
@@ -30,7 +31,8 @@
 		twitter,
 		email,
 		resume,
-		location
+		location,
+		openToWork
 	} = config;
 
 	type iconType = typeof Sun;
@@ -41,6 +43,7 @@
 		email: Mail
 	} as const;
 
+	// run once when page on mount
 	onMount(async () => {
 		fetch(`https://api.github.com/users/${github}/repos?sort=pushed&type=public`)
 			.then((response) => response.json())
@@ -52,6 +55,12 @@
 				console.error(error);
 			});
 	});
+
+	// Read derived store value
+	let langs: string;
+	let rCount: number;
+	topLangs.subscribe((l) => (langs = l));
+	reposCount.subscribe((c) => (rCount = c));
 
 	// openGithub navigate to github profile
 	const openGitHub = () => {
@@ -159,13 +168,12 @@
 			</div>
 			<!-- Terminal body (personal detail json) -->
 			<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
-			<div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
-				Loading geek info.... <br />
-				name: {name} <br />
-				location: {location} <br />
-				repositories: {name} <br />
-				skills: {name} <br />
-				hireable: {true} <br />
+			<div class="pl-1 h-96 text-center bg-[#262626] w-full rounded-b-2xl text-zinc-400">
+				<Terminal
+					content={["Loading geek info...^600",
+						`const geek = {<br>&emsp;name: "${name}", <br>&emsp;location: "${location}", <br>&emsp;repositories: ${rCount}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${openToWork}, <br> }`
+					]}
+				></Terminal>
 			</div>
 		</div>
 	</div>
@@ -177,7 +185,7 @@
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
 		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
-			{#each $topSixRepos as repo}
+			{#each $topRepos as repo}
 				<ProjectCard
 					name={repo.name}
 					desc={repo.description}

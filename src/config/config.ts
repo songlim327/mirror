@@ -9,5 +9,6 @@ export const config: Record<string, string> = {
 	twitter: 'https://x.com/songlim666',
 	email: 'songlim327@gmail.com',
 	resume: '',
-	location: 'Malaysia'
+	location: 'Malaysia',
+	openToWork: 'false'
 } as const;
