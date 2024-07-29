@@ -1,7 +1,8 @@
 import { writable, derived } from 'svelte/store';
-import type { GithubRepos } from './type';
+import type { GithubRepos, GithubUser } from './type';
 
 export const repos = writable<GithubRepos[]>([]);
+export const user = writable<GithubUser>();
 
 // popularRepoSort is a custom sort function to sort repositories based on popularity (sum of stars and forks)
 const popularRepoSort = (a: GithubRepos, b: GithubRepos) => {
@@ -20,9 +21,4 @@ export const topRepos = derived(repos, ($repos) => {
 export const topLangs = derived(repos, ($repos) => {
 	const sortedRepos = $repos.sort(popularRepoSort);
 	return [...new Set(sortedRepos.map((r) => r.language))].slice(0, 6).join(', ');
-});
-
-// reposCount returns the number of public repositories given the github user
-export const reposCount = derived(repos, ($repos) => {
-	return $repos.length;
 });

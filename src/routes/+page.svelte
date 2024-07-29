@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { toggleMode } from 'mode-watcher';
 	import { config } from '../config/config';
-	import { repos, topRepos, topLangs, reposCount } from '$lib/store';
+	import { repos, topRepos, topLangs } from '$lib/store';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -20,6 +21,7 @@
 	import { ProjectCard } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Terminal } from '$lib/components/mirror/terminal';
+	import type { GithubUser } from '$lib/type';
 
 	const {
 		profilePicture,
@@ -43,8 +45,22 @@
 		email: Mail
 	} as const;
 
+	let user: GithubUser;
+
+	const getGithubUser = async () => {
+		try {
+			const response = await fetch(`https://api.github.com/users/${github}`);
+			const result = await response.json();
+			user = result;
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	// run once when page on mount
 	onMount(async () => {
+		getGithubUser();
+
 		fetch(`https://api.github.com/users/${github}/repos?sort=pushed&type=public`)
 			.then((response) => response.json())
 			.then((data) => {
@@ -57,10 +73,8 @@
 	});
 
 	// Read derived store value
-	let langs: string;
-	let rCount: number;
-	topLangs.subscribe((l) => (langs = l));
-	reposCount.subscribe((c) => (rCount = c));
+	// const ghUser: GithubUser = get(user);
+	const langs: string = get(topLangs);
 
 	// openGithub navigate to github profile
 	const openGitHub = () => {
@@ -154,27 +168,37 @@
 		class="mx-auto max-w-[1000px] flex flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
 	>
 		<h1 class="text-4xl/8 font-extrabold">Personal Details</h1>
-		<div class="w-full">
-			<!-- Terminal header -->
-			<div
-				class="relative rounded-t-2xl p-2 flex text-center text-zinc-400 dark:border-[#b3b3b3] bg-[#36363b] dark:bg-[#f5f0ef]"
-			>
-				<div class="absolute flex gap-2 my-1 ml-3 left-0">
-					<span class="rounded-full p-2 bg-[#ff6057]"></span>
-					<span class="rounded-full p-2 bg-[#febc2e]"></span>
-					<span class="rounded-full p-2 bg-[#28c940]"></span>
+
+		<div class="w-full grid grid-cols-12 gap-4 mt-4">
+			<div class="w-full col-span-8">
+				<!-- Terminal header -->
+				<div
+					class="relative rounded-t-lg p-1 flex text-center text-zinc-400 dark:border-[#b3b3b3] bg-[#36363b] dark:bg-[#f5f0ef]"
+				>
+					<div class="absolute flex gap-2 my-1 ml-3 left-0">
+						<span class="rounded-full p-2 bg-[#ff6057]"></span>
+						<span class="rounded-full p-2 bg-[#febc2e]"></span>
+						<span class="rounded-full p-2 bg-[#28c940]"></span>
+					</div>
+					<div class="flex-1 font-bold dark:text-stone-800/90">-{github}</div>
 				</div>
-				<div class="flex-1 font-bold dark:text-stone-800/90">-{github}</div>
+				<!-- Terminal body (personal detail json) -->
+				<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
+				<div class="pl-1 h-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
+					{#if user && langs}
+						<Terminal
+							content={[
+								'Loading geek info...^600',
+								// `const geek = {<br>&emsp;name: "${$user.name}", <br>&emsp;location: "${$user?.location}", <br>&emsp;repositories: ${$user?.public_repos}, <br>&emsp;email: ${email}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${$user?.hireable}, <br> }`
+								`const geek = {<br>&emsp;name: "${user.name}", <br>&emsp;location: "${user.location}", <br>&emsp;repositories: ${user.public_repos}, <br>&emsp;email: ${email}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${user.hireable}, <br> }`
+							]}
+						></Terminal>
+					{/if}
+				</div>
 			</div>
-			<!-- Terminal body (personal detail json) -->
-			<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
-			<div class="pl-1 h-96 text-center bg-[#262626] w-full rounded-b-2xl text-zinc-400">
-				<Terminal
-					content={["Loading geek info...^600",
-						`const geek = {<br>&emsp;name: "${name}", <br>&emsp;location: "${location}", <br>&emsp;repositories: ${rCount}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${openToWork}, <br> }`
-					]}
-				></Terminal>
-			</div>
+
+			<!-- Skill tree -->
+			<div class="col-span-4">Skill tree</div>
 		</div>
 	</div>
 
