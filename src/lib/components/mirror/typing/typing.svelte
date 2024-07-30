@@ -18,5 +18,5 @@
 </script>
 
 <div class="p-2">
-	<span id="terminal-content" class="font-mono"></span>
+	<span id="terminal-content" class="font-fira"></span>
 </div>

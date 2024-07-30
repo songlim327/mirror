@@ -16,26 +16,16 @@
 		Mail,
 		Download,
 		Star,
-		GitFork
+		GitFork,
+		SquareTerminal
 	} from 'lucide-svelte';
 	import { ProjectCard, ProjectCardSkeleton } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Typing } from '$lib/components/mirror/typing';
 	import FarmImg from '$lib/assets/farm.png';
 
-	const {
-		profilePicture,
-		name,
-		description,
-		github,
-		linkedin,
-		facebook,
-		twitter,
-		email,
-		resume,
-		location,
-		openToWork
-	} = config;
+	const { profilePicture, name, description, github, linkedin, facebook, twitter, email, resume } =
+		config;
 
 	type iconType = typeof Sun;
 	const socialMap: Record<string, iconType> = {
@@ -60,7 +50,7 @@
 			// Sort repositories
 			const sortedRepos = data.sort(popularRepoSort);
 			const topRepos = sortedRepos.slice(0, 6);
-			const topLangs = [...new Set(sortedRepos.map((r: GithubRepo) => r.language))]
+			const topLangs = [...new Set(sortedRepos.map((r: GithubRepo) => `"${r.language}"`))]
 				.slice(0, 6)
 				.join(', ');
 
@@ -73,6 +63,9 @@
 		queryKey: ['user'],
 		queryFn: async () => await getGithubUser(github),
 		select: (data) => {
+			if (data.hireable === null) {
+				data.hireable = false;
+			}
 			return { ...data };
 		}
 	});
@@ -135,7 +128,7 @@
 		>
 			<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
 			<!-- Name -->
-			<h1 class="text-xl/6 font-bold">{name}</h1>
+			<h1 class="text-2xl font-bold font-fira">{name}</h1>
 			<!-- Description -->
 			<span class="text-center text-pretty">{description}</span>
 			<!-- Social Toolbar -->
@@ -174,17 +167,23 @@
 			<div class="w-full col-span-8">
 				<!-- Terminal header -->
 				<div
-					class="relative rounded-t-lg p-1 flex text-center text-zinc-400 dark:border-[#b3b3b3] bg-[#36363b] dark:bg-[#f5f0ef]"
+					class="relative rounded-t-lg p-2 flex justify-center border border-[#dfd9de] dark:border-[#242426] bg-[#f3f3f3] dark:bg-[#3c3d40]"
 				>
 					<div class="absolute flex gap-2 my-1 ml-3 left-0">
-						<span class="rounded-full p-2 bg-[#ff6057]"></span>
+						<span class="rounded-full p-2 bg-[#ff5953]"></span>
 						<span class="rounded-full p-2 bg-[#febc2e]"></span>
 						<span class="rounded-full p-2 bg-[#28c940]"></span>
 					</div>
-					<div class="flex-1 font-bold dark:text-stone-800/90">-{github}</div>
+					<div
+						class="flex flex-row gap-1 items-center font-bold font-mono text-stone-800 dark:text-stone-300"
+					>
+						<SquareTerminal class="w-5 h-5" />{github}
+					</div>
 				</div>
 				<!-- Terminal body (personal detail json) -->
-				<div class="pl-1 h-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
+				<div
+					class="pl-1 h-96 bg-[#ffffff]/50 dark:bg-[#282c35]/50 w-full rounded-b-2xl border-x border-b border-[#dfd9de] dark:border-[#242426] text-zinc-800 dark:text-[#b9bfcb]"
+				>
 					{#if $qUser.isLoading || $qRepos.isLoading}
 						<Typing content={['Loading geek info...']}></Typing>
 					{:else if $qUser.isError}
