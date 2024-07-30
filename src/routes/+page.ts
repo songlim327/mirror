@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types';
 import { config } from '../config/config';
-import { getGithubRepos } from '$lib/api';
+import { getGithubRepos, getGithubUser } from '$lib/api';
 
 export const load: PageLoad = async ({ parent }) => {
 	const { queryClient } = await parent();
@@ -12,6 +12,9 @@ export const load: PageLoad = async ({ parent }) => {
 		queryFn: async () => await getGithubRepos(github)
 	});
 
-    
+	// Fetch github user given github handler
+	await queryClient.prefetchQuery({
+		queryKey: ['user'],
+		queryFn: async () => await getGithubUser(github)
+	});
 };
-

@@ -3,7 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { config } from '../config/config';
 	import type { GithubRepo } from '$lib/type';
-	import { getGithubRepos } from '$lib/api';
+	import { getGithubRepos, getGithubUser } from '$lib/api';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -20,7 +20,7 @@
 	} from 'lucide-svelte';
 	import { ProjectCard, ProjectCardSkeleton } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
-	import { Terminal } from '$lib/components/mirror/terminal';
+	import { Typing } from '$lib/components/mirror/typing';
 	import FarmImg from '$lib/assets/farm.png';
 
 	const {
@@ -52,7 +52,7 @@
 		return aCount > bCount ? -1 : aCount === bCount ? 0 : 1;
 	};
 
-	//
+	// qRepos creates a query to fetch a list of repositories for a given handler
 	const qRepos = createQuery({
 		queryKey: ['repos'],
 		queryFn: async () => await getGithubRepos(github),
@@ -65,6 +65,15 @@
 				.join(', ');
 
 			return { ...data, topRepos, topLangs };
+		}
+	});
+
+	// qUser creates a query to fetch a github user details for a given handler
+	const qUser = createQuery({
+		queryKey: ['user'],
+		queryFn: async () => await getGithubUser(github),
+		select: (data) => {
+			return { ...data };
 		}
 	});
 
@@ -126,9 +135,7 @@
 		>
 			<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
 			<!-- Name -->
-			<!-- {#if ghUser}
-				<h1 class="text-xl/6 font-bold">{ghUser.name}</h1>
-			{/if} -->
+			<h1 class="text-xl/6 font-bold">{name}</h1>
 			<!-- Description -->
 			<span class="text-center text-pretty">{description}</span>
 			<!-- Social Toolbar -->
@@ -178,15 +185,21 @@
 				</div>
 				<!-- Terminal body (personal detail json) -->
 				<div class="pl-1 h-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
-					<!-- {#if ghUser && qlangs}
-						<Terminal
+					{#if $qUser.isLoading || $qRepos.isLoading}
+						<Typing content={['Loading geek info...']}></Typing>
+					{:else if $qUser.isError}
+						<Typing content={[`Failed in calling Github API. (Error: ${$qUser.error.message})`]}
+						></Typing>
+					{:else if $qRepos.isError}
+						<Typing content={[`Failed in calling Github API. (Error: ${$qRepos.error.message})`]}
+						></Typing>
+					{:else if $qUser.isSuccess && $qRepos.isSuccess}
+						<Typing
 							content={[
-								`const geek = {<br>&emsp;name: "${ghUser.name}", <br>&emsp;company: "${ghUser.company}", <br>&emsp;location: "${ghUser.location}", <br>&emsp;email: "${email}", <br>&emsp;repositories: ${ghUser.public_repos}, <br>&emsp;gists: ${ghUser.public_gists}, <br>&emsp;followers: ${ghUser.followers}, <br>&emsp;following: ${ghUser.following}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${ghUser.hireable}, <br> }`
+								`const geek = {<br>&emsp;name: "${$qUser.data.name}", <br>&emsp;company: "${$qUser.data.company}", <br>&emsp;location: "${$qUser.data.location}", <br>&emsp;email: "${email}", <br>&emsp;repositories: ${$qUser.data.public_repos}, <br>&emsp;gists: ${$qUser.data.public_gists}, <br>&emsp;followers: ${$qUser.data.followers}, <br>&emsp;following: ${$qUser.data.following}, <br>&emsp;skills: [${$qRepos.data.topLangs}], <br>&emsp;openToWork: ${$qUser.data.hireable}, <br> }`
 							]}
-						></Terminal>
-					{:else}
-						<Terminal content={['Loading geek info...']}></Terminal>
-					{/if} -->
+						></Typing>
+					{/if}
 				</div>
 			</div>
 
