@@ -3,6 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { config } from '../config/config';
 	import type { GithubRepo } from '$lib/type';
+	import { getGithubRepos } from '$lib/api';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -17,10 +18,10 @@
 		Star,
 		GitFork
 	} from 'lucide-svelte';
-	import { ProjectCard } from '$lib/components/mirror/project-card';
+	import { ProjectCard, ProjectCardSkeleton } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Terminal } from '$lib/components/mirror/terminal';
-	import { getGithubRepos } from '$lib/api';
+	import FarmImg from '$lib/assets/farm.png';
 
 	const {
 		profilePicture,
@@ -201,11 +202,22 @@
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
 		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
-			<!-- {#each $topRepos as repo} -->
 			{#if $qRepos.isLoading}
-				<p>Loading...</p>
+				{#each { length: 4 } as _, i}
+					<ProjectCardSkeleton />
+				{/each}
 			{:else if $qRepos.isError}
-				<p>Error: {$qRepos.error.message}</p>
+				<div class="col-span-2 w-full flex flex-col items-center">
+					<img src={FarmImg} alt="error" width={512} height={512} />
+					<p>
+						Failed in calling Github API. (Error: {$qRepos.error.message}) Visit
+						<a
+							href={`https://github.com/${github}`}
+							class="hover:font-medium hover:underline hover:text-foreground hover:cursor-pointer"
+							>github</a
+						>
+					</p>
+				</div>
 			{:else if $qRepos.isSuccess}
 				{#each $qRepos.data.topRepos as repo}
 					<ProjectCard
