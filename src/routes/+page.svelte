@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
 	import { toggleMode } from 'mode-watcher';
+	import { createQuery } from '@tanstack/svelte-query';
 	import { config } from '../config/config';
-	import { repos, topRepos, topLangs } from '$lib/store';
+	import type { GithubRepo } from '$lib/type';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -21,7 +20,7 @@
 	import { ProjectCard } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Terminal } from '$lib/components/mirror/terminal';
-	import type { GithubUser } from '$lib/type';
+	import { getGithubRepos } from '$lib/api';
 
 	const {
 		profilePicture,
@@ -45,36 +44,28 @@
 		email: Mail
 	} as const;
 
-	let user: GithubUser;
-
-	const getGithubUser = async () => {
-		try {
-			const response = await fetch(`https://api.github.com/users/${github}`);
-			const result = await response.json();
-			user = result;
-		} catch (error) {
-			console.error(error);
-		}
+	// popularRepoSort is a custom sort function to sort repositories based on popularity (sum of stars and forks)
+	const popularRepoSort = (a: GithubRepo, b: GithubRepo) => {
+		const aCount = a.stargazers_count + a.forks_count;
+		const bCount = b.stargazers_count + b.forks_count;
+		return aCount > bCount ? -1 : aCount === bCount ? 0 : 1;
 	};
 
-	// run once when page on mount
-	onMount(async () => {
-		getGithubUser();
+	//
+	const qRepos = createQuery({
+		queryKey: ['repos'],
+		queryFn: async () => await getGithubRepos(github),
+		select: (data) => {
+			// Sort repositories
+			const sortedRepos = data.sort(popularRepoSort);
+			const topRepos = sortedRepos.slice(0, 6);
+			const topLangs = [...new Set(sortedRepos.map((r: GithubRepo) => r.language))]
+				.slice(0, 6)
+				.join(', ');
 
-		fetch(`https://api.github.com/users/${github}/repos?sort=pushed&type=public`)
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-				repos.set(data);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+			return { ...data, topRepos, topLangs };
+		}
 	});
-
-	// Read derived store value
-	// const ghUser: GithubUser = get(user);
-	const langs: string = get(topLangs);
 
 	// openGithub navigate to github profile
 	const openGitHub = () => {
@@ -134,7 +125,9 @@
 		>
 			<img src={profilePicture} alt="profile" class="rounded-full" width={192} height={192} />
 			<!-- Name -->
-			<h1 class="text-xl/6 font-bold">{name}</h1>
+			<!-- {#if ghUser}
+				<h1 class="text-xl/6 font-bold">{ghUser.name}</h1>
+			{/if} -->
 			<!-- Description -->
 			<span class="text-center text-pretty">{description}</span>
 			<!-- Social Toolbar -->
@@ -183,17 +176,16 @@
 					<div class="flex-1 font-bold dark:text-stone-800/90">-{github}</div>
 				</div>
 				<!-- Terminal body (personal detail json) -->
-				<!-- <div class="pl-1 pb-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">manager@test:~$</div> -->
 				<div class="pl-1 h-96 bg-[#262626] w-full rounded-b-2xl text-zinc-400">
-					{#if user && langs}
+					<!-- {#if ghUser && qlangs}
 						<Terminal
 							content={[
-								'Loading geek info...^600',
-								// `const geek = {<br>&emsp;name: "${$user.name}", <br>&emsp;location: "${$user?.location}", <br>&emsp;repositories: ${$user?.public_repos}, <br>&emsp;email: ${email}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${$user?.hireable}, <br> }`
-								`const geek = {<br>&emsp;name: "${user.name}", <br>&emsp;location: "${user.location}", <br>&emsp;repositories: ${user.public_repos}, <br>&emsp;email: ${email}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${user.hireable}, <br> }`
+								`const geek = {<br>&emsp;name: "${ghUser.name}", <br>&emsp;company: "${ghUser.company}", <br>&emsp;location: "${ghUser.location}", <br>&emsp;email: "${email}", <br>&emsp;repositories: ${ghUser.public_repos}, <br>&emsp;gists: ${ghUser.public_gists}, <br>&emsp;followers: ${ghUser.followers}, <br>&emsp;following: ${ghUser.following}, <br>&emsp;skills: [${langs}], <br>&emsp;openToWork: ${ghUser.hireable}, <br> }`
 							]}
 						></Terminal>
-					{/if}
+					{:else}
+						<Terminal content={['Loading geek info...']}></Terminal>
+					{/if} -->
 				</div>
 			</div>
 
@@ -209,16 +201,23 @@
 		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
 		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
-			{#each $topRepos as repo}
-				<ProjectCard
-					name={repo.name}
-					desc={repo.description}
-					star={repo.stargazers_count}
-					fork={repo.forks_count}
-					lang={repo.language}
-					url={repo.html_url}
-				/>
-			{/each}
+			<!-- {#each $topRepos as repo} -->
+			{#if $qRepos.isLoading}
+				<p>Loading...</p>
+			{:else if $qRepos.isError}
+				<p>Error: {$qRepos.error.message}</p>
+			{:else if $qRepos.isSuccess}
+				{#each $qRepos.data.topRepos as repo}
+					<ProjectCard
+						name={repo.name}
+						desc={repo.description}
+						star={repo.stargazers_count}
+						fork={repo.forks_count}
+						lang={repo.language}
+						url={repo.html_url}
+					/>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

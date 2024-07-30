@@ -19,7 +19,7 @@ export interface Owner {
 	site_admin: boolean;
 }
 
-export interface GithubRepos {
+export interface GithubRepo {
 	id: number;
 	node_id: string;
 	name: string;
