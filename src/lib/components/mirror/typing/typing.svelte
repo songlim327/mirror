@@ -7,13 +7,22 @@
 	export { content };
 
 	onMount(() => {
-		const typed = new Typed('#terminal-content', {
-			strings: content,
-			typeSpeed: 20,
-			onComplete(self) {
-				self.cursor.remove();
-			}
+		const observer = new IntersectionObserver((entries, observer) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					const typed = new Typed('#terminal-content', {
+						strings: content,
+						typeSpeed: 20,
+						onComplete(self) {
+							self.cursor.remove();
+						}
+					});
+					observer.unobserve(entry.target);
+				}
+			});
 		});
+
+		observer.observe(document.querySelector('#terminal-content')!);
 	});
 </script>
 
