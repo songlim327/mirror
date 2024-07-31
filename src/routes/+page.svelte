@@ -163,8 +163,8 @@
 	>
 		<h1 class="text-4xl/8 font-extrabold">Personal Details</h1>
 
-		<div class="w-full grid grid-cols-12 gap-4 mt-4">
-			<div class="w-full col-span-8">
+		<div class="w-full grid grid-cols-12 gap-6 mt-4">
+			<div class="w-10/12 col-span-12 mx-auto">
 				<!-- Terminal header -->
 				<div
 					class="relative rounded-t-lg p-2 flex justify-center border border-[#dfd9de] dark:border-[#242426] bg-[#f3f3f3] dark:bg-[#3c3d40]"
@@ -201,9 +201,6 @@
 					{/if}
 				</div>
 			</div>
-
-			<!-- Skill tree -->
-			<div class="col-span-4">Skill tree</div>
 		</div>
 	</div>
 

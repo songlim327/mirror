@@ -2,8 +2,7 @@ export const config: Record<string, string> = {
 	name: 'Song Lim',
 	email: 'songlim327@gmail.com',
 	profilePicture: 'https://avatars.githubusercontent.com/u/36408539?v=4',
-	description:
-		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+	description: 'Hi, good to see you here. I am Song Lim, a currently full time software engineer, is passionate and dedicated in exploring and crafting innovative solutions, delivering high-quality and efficient code. I thrive on continuous learning, eagerly staying updated with the latest technologies and industry trends.',
 	github: 'songlim327',
 	linkedin: 'https://www.linkedin.com/in/songlim-327/',
 	facebook: '',
