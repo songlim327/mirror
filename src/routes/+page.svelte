@@ -23,7 +23,9 @@
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Typing } from '$lib/components/mirror/typing';
 	import { Header } from '$lib/components/mirror/header';
+	import { LightballCursor } from '$lib/components/mirror/lightballcursor';
 	import FarmImg from '$lib/assets/farm.png';
+	import { Content } from '$lib/components/ui/card';
 
 	const { profilePicture, name, description, github, linkedin, facebook, twitter, email, resume } =
 		config;
@@ -82,6 +84,7 @@
 	};
 </script>
 
+<LightballCursor />
 <header
 	class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
@@ -93,7 +96,7 @@
 			<nav class="flex items-center space-x-2">
 				<Tooltip.Root>
 					<Tooltip.Trigger>
-						<Button variant="ghost" size="icon" on:click={openGitHub}>
+						<Button class="hover:cursor-none" variant="ghost" size="icon" on:click={openGitHub}>
 							<Github size={28} />
 						</Button>
 					</Tooltip.Trigger>
@@ -101,7 +104,7 @@
 				</Tooltip.Root>
 				<Tooltip.Root>
 					<Tooltip.Trigger>
-						<Button variant="ghost" size="icon" on:click={toggleMode}>
+						<Button class="hover:cursor-none" variant="ghost" size="icon" on:click={toggleMode}>
 							<Sun
 								class="absolute h-7 w-7 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
 								size={28}
@@ -141,7 +144,7 @@
 								<Button
 									variant="outline"
 									size="icon"
-									class="h-8 w-8"
+									class="h-8 w-8 hover:cursor-none"
 									on:click={() => {
 										console.log(config[socialKey]);
 										console.log(socialKey);
@@ -154,7 +157,14 @@
 				{/each}
 			</div>
 			<!-- Get resume button -->
-			<Button on:click={openResume}><Download class="mr-2 h-4 w-4" />RESUME</Button>
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<Button class="hover:cursor-none" on:click={openResume}
+						><Download class="mr-2 h-4 w-4" />RESUME</Button
+					>
+				</Tooltip.Trigger>
+				<Tooltip.Content>View resume</Tooltip.Content>
+			</Tooltip.Root>
 		</div>
 	</Meteor>
 
@@ -229,8 +239,7 @@
 						Failed in calling Github API. (Error: {$qRepos.error.message}) Visit
 						<a
 							href={`https://github.com/${github}`}
-							class="hover:font-medium hover:underline hover:text-foreground hover:cursor-pointer"
-							>github</a
+							class="hover:font-medium hover:underline hover:text-foreground">github</a
 						>
 					</p>
 				</div>
@@ -256,16 +265,14 @@
 		<div>
 			Built & designed with 💙 by <a
 				href="https://github.com/songlim327"
-				class="underline font-medium hover:text-foreground hover:cursor-pointer">songlim327</a
+				class="underline font-medium hover:text-foreground hover:cursor-none">songlim327</a
 			>
 		</div>
 		<div class="flex gap-4">
-			<div
-				class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
-			></div>
+			<div class="flex gap-1 items-center hover:underline hover:text-foreground"></div>
 			<Tooltip.Root>
 				<Tooltip.Trigger
-					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-none"
 				>
 					<Star class="h-4 w-4" />Star
 				</Tooltip.Trigger>
@@ -273,7 +280,7 @@
 			</Tooltip.Root>
 			<Tooltip.Root>
 				<Tooltip.Trigger
-					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-pointer"
+					class="flex gap-1 items-center hover:underline hover:text-foreground hover:cursor-none"
 				>
 					<GitFork class="h-4 w-4" />Fork
 				</Tooltip.Trigger>

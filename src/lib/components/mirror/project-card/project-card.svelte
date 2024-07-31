@@ -20,9 +20,9 @@
 </script>
 
 <!-- Hover background image -->
-<button class="text-start" on:click={openRepository}>
+<button class="text-start hover:cursor-none" on:click={openRepository}>
 	<div
-		class="relative w-full rounded-md p-6 border border-gray-300 dark:border-gray-500 group/card hover:cursor-pointer"
+		class="relative w-full rounded-md p-6 border border-gray-300 dark:border-gray-500 group/card"
 	>
 		<div class="absolute inset-0.5 -z-50">
 			<img
