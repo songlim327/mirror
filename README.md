@@ -1,38 +1,72 @@
-# create-svelte
+# Mirror 🪞
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Welcome to the `mirror` repository! This project provides a robust and customizable template for creating a sleek, modern and professional look portfolio website. The template is perfect for developers with a github account to showcase their projects. Most of the information comes from github, thus minimal configuration is required to run.
 
-## Creating a project
+## Showcase
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Getting Started
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### Prerequisites
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Everything you need to build this project are listed below:
 
-## Developing
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Fork and clone
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+Fork the repository and clone to local to run:
 
 ```bash
-npm run build
+git clone https://github.com/<YOUR_GITHUB_USERNAME>/mirror.git
+cd mirror
 ```
 
-You can preview the production build with `npm run preview`.
+### Installation
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Install the project dependencies by running command below.
+
+```bash
+npm install
+```
+
+### Running the Project
+
+```bash
+npm run start
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
+
+## Usage
+
+### Customize the config file in `config` [directory](https://github.com/songlim327/mirror/tree/master/src/config/config.ts)
+
+Eg:
+
+```typescript
+export const config: Record<string, string> = {
+    name: 'Song Lim',
+    github: 'songlim327',
+    email: 'songlim327@gmail.com',
+    profilePicture: 'https://avatars.githubusercontent.com/u/36408539?v=4',
+    description: 'Hi, good to see you here. I am Song Lim, a currently full time software engineer, is passionate and dedicated in exploring and crafting innovative solutions, delivering high-quality and efficient code. I thrive on continuous learning and explore the latest technologies and industry trends.',
+    linkedin: 'https://www.linkedin.com/in/songlim-327/',
+    facebook: '',
+    stackoverflow: '',
+    twitter: 'https://x.com/songlim666',
+    resume: ''
+} as const;
+```
+
+## Package used 📦
+
+| Packages               |
+| ---------------------- |
+| svelte                 |
+| tailwindcss            |
+| @tanstack/svelte-query |
+| lucide-svelte          |
+| typed.js               |
+| shadcn-svelte          |
