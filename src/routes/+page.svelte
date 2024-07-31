@@ -22,6 +22,7 @@
 	import { ProjectCard, ProjectCardSkeleton } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Typing } from '$lib/components/mirror/typing';
+	import { Header } from '$lib/components/mirror/header';
 	import FarmImg from '$lib/assets/farm.png';
 
 	const { profilePicture, name, description, github, linkedin, facebook, twitter, email, resume } =
@@ -159,9 +160,13 @@
 
 	<!-- Command line styled personal details -->
 	<div
-		class="mx-auto max-w-[1000px] flex flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
+		class="mx-auto max-w-[1000px] flex flex-col items-center py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
 	>
-		<h1 class="text-4xl/8 font-extrabold">Personal Details</h1>
+		<div class="w-10/12 flex items-center">
+			<span class="flex-1 bg-gradient-to-l from-white h-0.5 shadow-lg shadow-white/50" />
+			<h1 class="shrink-0 p-4 text-4xl/8 font-extrabold">Personal Details</h1>
+			<span class="flex-1 bg-gradient-to-r from-white h-0.5 shadow-lg shadow-white/50" />
+		</div>
 
 		<div class="w-full grid grid-cols-12 gap-6 mt-4">
 			<div class="w-10/12 col-span-12 mx-auto">
@@ -206,9 +211,11 @@
 
 	<!-- Github repository section -->
 	<div
-		class="mx-auto max-w-[1000px] flex flex-col items-center gap-4 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
+		class="mx-auto max-w-[1000px] flex flex-col items-center py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20"
 	>
-		<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
+		<Header>
+			<h1 class="text-4xl/8 font-extrabold">Github Repositories</h1>
+		</Header>
 		<div class="w-full grid grid-cols-2 gap-6 mt-4">
 			<!-- Card -->
 			{#if $qRepos.isLoading}
