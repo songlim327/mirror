@@ -79,9 +79,9 @@
 		window.open(`https://github.com/${github}`, '_blank');
 	};
 
-	// openResume navigate to specified resume url
-	const openResume = () => {
-		window.open(resume, '_blank');
+	// openLink navigate to specified url
+	const openLink = (url: string) => {
+		window.open(url, '_blank');
 	};
 </script>
 
@@ -147,8 +147,11 @@
 									size="icon"
 									class="h-8 w-8 hover:cursor-none"
 									on:click={() => {
-										console.log(config[socialKey]);
-										console.log(socialKey);
+										let link = config[socialKey];
+										if (socialKey === 'email') {
+											link = `mailto:${config[socialKey]}`;
+										}
+										openLink(link);
 									}}><Icon size={16} /></Button
 								>
 							</Tooltip.Trigger>
@@ -160,8 +163,11 @@
 			<!-- Get resume button -->
 			<Tooltip.Root>
 				<Tooltip.Trigger>
-					<Button class="hover:cursor-none" on:click={openResume}
-						><Download class="mr-2 h-4 w-4" />RESUME</Button
+					<Button
+						class="hover:cursor-none"
+						on:click={() => {
+							openLink(resume);
+						}}><Download class="mr-2 h-4 w-4" />RESUME</Button
 					>
 				</Tooltip.Trigger>
 				<Tooltip.Content>View resume</Tooltip.Content>
@@ -198,7 +204,7 @@
 				</div>
 				<!-- Terminal body (personal detail json) -->
 				<div
-					class="pl-1 h-96 bg-[#ffffff]/50 dark:bg-[#282c35]/50 w-full rounded-b-2xl border-x border-b border-[#dfd9de] dark:border-[#242426] text-zinc-800 dark:text-[#b9bfcb]"
+					class="pl-1 min-h-96 bg-[#ffffff]/50 dark:bg-[#282c35]/50 w-full rounded-b-2xl border-x border-b border-[#dfd9de] dark:border-[#242426] text-zinc-800 dark:text-[#b9bfcb]"
 				>
 					{#if $qUser.isLoading || $qRepos.isLoading}
 						<Typing content={['Loading geek info...']}></Typing>
