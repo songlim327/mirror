@@ -20,7 +20,7 @@
 </script>
 
 <!-- Hover background image -->
-<button class="text-start hover:cursor-none" on:click={openRepository}>
+<button class="text-start hover:cursor-none" on:click={openRepository} on:mouseenter on:mouseleave>
 	<div
 		class="relative w-full rounded-md p-6 border border-gray-300 dark:border-gray-500 group/card"
 	>

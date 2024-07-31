@@ -37,6 +37,7 @@
 		twitter: Twitter,
 		email: Mail
 	} as const;
+	let lightballCursor: LightballCursor;
 
 	// popularRepoSort is a custom sort function to sort repositories based on popularity (sum of stars and forks)
 	const popularRepoSort = (a: GithubRepo, b: GithubRepo) => {
@@ -84,7 +85,7 @@
 	};
 </script>
 
-<LightballCursor />
+<LightballCursor bind:this={lightballCursor} />
 <header
 	class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
@@ -246,6 +247,12 @@
 			{:else if $qRepos.isSuccess}
 				{#each $qRepos.data.topRepos as repo}
 					<ProjectCard
+						on:mouseenter={() => {
+							lightballCursor.lightup();
+						}}
+						on:mouseleave={() => {
+							lightballCursor.normal();
+						}}
 						name={repo.name}
 						desc={repo.description}
 						star={repo.stargazers_count}
