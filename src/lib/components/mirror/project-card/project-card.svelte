@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/badge';
-	import { Github, Star, GitFork } from 'lucide-svelte';
+	import { Star, GitFork } from 'lucide-svelte';
+	import { Github } from '$lib/components/mirror/icons';
 	import GithubImg from '$lib/assets/github.png';
 	import Action from './action.svelte';
 
@@ -39,7 +40,7 @@
 			</div>
 			<div class="col-span-1">
 				<Github
-					size={32}
+					size={28}
 					class="float-end border rounded-full p-1 group-hover/card:opacity-0 group-hover/card:transition-opacity group-hover/card:ease-out group-hover/card:duration-500"
 				/>
 			</div>

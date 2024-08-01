@@ -6,35 +6,23 @@
 	import { getGithubRepos, getGithubUser } from '$lib/api';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Button } from '$lib/components/ui/button';
-	import {
-		Sun,
-		Moon,
-		Github,
-		Linkedin,
-		Facebook,
-		Twitter,
-		Mail,
-		Download,
-		Star,
-		GitFork,
-		SquareTerminal
-	} from 'lucide-svelte';
+	import { Sun, Moon, Mail, Download, Star, GitFork, SquareTerminal } from 'lucide-svelte';
 	import { ProjectCard, ProjectCardSkeleton } from '$lib/components/mirror/project-card';
 	import { Meteor } from '$lib/components/mirror/meteor';
 	import { Typing } from '$lib/components/mirror/typing';
 	import { Header } from '$lib/components/mirror/header';
 	import { LightballCursor } from '$lib/components/mirror/lightballcursor';
+	import { Facebook, Twitter, Linkedin, Stackoverflow, Github } from '$lib/components/mirror/icons';
 	import FarmImg from '$lib/assets/farm.png';
-	import { Content } from '$lib/components/ui/card';
 
-	const { profilePicture, name, description, github, linkedin, facebook, twitter, email, resume } =
-		config;
+	const { profilePicture, name, description, github, email, resume } = config;
 
-	type iconType = typeof Sun;
+	type iconType = typeof Facebook | typeof Mail;
 	const socialMap: Record<string, iconType> = {
 		linkedin: Linkedin,
 		facebook: Facebook,
 		twitter: Twitter,
+		stackoverflow: Stackoverflow,
 		email: Mail
 	} as const;
 	let lightballCursor: LightballCursor;
@@ -145,14 +133,14 @@
 								<Button
 									variant="outline"
 									size="icon"
-									class="h-8 w-8 hover:cursor-none"
+									class="h-9 w-9 hover:cursor-none"
 									on:click={() => {
 										let link = config[socialKey];
 										if (socialKey === 'email') {
 											link = `mailto:${config[socialKey]}`;
 										}
 										openLink(link);
-									}}><Icon size={16} /></Button
+									}}><Icon size={20} /></Button
 								>
 							</Tooltip.Trigger>
 							<Tooltip.Content>{socialKey}</Tooltip.Content>
@@ -165,6 +153,7 @@
 				<Tooltip.Trigger>
 					<Button
 						class="hover:cursor-none"
+						variant="default"
 						on:click={() => {
 							openLink(resume);
 						}}><Download class="mr-2 h-4 w-4" />RESUME</Button
