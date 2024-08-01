@@ -13,7 +13,7 @@
 	import { Header } from '$lib/components/mirror/header';
 	import { LightballCursor } from '$lib/components/mirror/lightballcursor';
 	import { Facebook, Twitter, Linkedin, Stackoverflow, Github } from '$lib/components/mirror/icons';
-	import FarmImg from '$lib/assets/farm.png';
+	import FarmImg from '$lib/assets/farm.webp';
 
 	const { profilePicture, name, description, github, email, resume } = config;
 

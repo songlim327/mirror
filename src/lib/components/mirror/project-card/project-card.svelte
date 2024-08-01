@@ -2,7 +2,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Star, GitFork } from 'lucide-svelte';
 	import { Github } from '$lib/components/mirror/icons';
-	import GithubImg from '$lib/assets/github.png';
+	import GithubImg from '$lib/assets/github.webp';
 	import Action from './action.svelte';
 
 	let name: string;
