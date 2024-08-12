@@ -15,6 +15,7 @@
 	import { LightballCursor } from '$lib/components/mirror/lightballcursor';
 	import { Facebook, Twitter, Linkedin, Stackoverflow, Github } from '$lib/components/mirror/icons';
 	import FarmImg from '$lib/assets/farm.webp';
+	import { GA4 } from '$env/dynamic/public';
 
 	const { profilePicture, name, description, github, email, resume } = config;
 
@@ -88,6 +89,18 @@
 	<meta name="twitter:title" content={name} />
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={`${$page.url.toString()}favicon.png`} />
+
+	<!-- Google tag (gtag.js) -->
+	<script async src={`https://www.googletagmanager.com/gtag/js?id=G-${GA4}`}></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', GA4);
+	</script>
 
 	<title>{name}</title>
 	<meta name="description" content={description} />
