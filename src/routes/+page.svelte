@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { toggleMode } from 'mode-watcher';
 	import { createQuery } from '@tanstack/svelte-query';
+	import { page } from '$app/stores';
 	import { config } from '../config/config';
 	import type { GithubRepo } from '$lib/type';
 	import { getGithubRepos, getGithubUser } from '$lib/api';
@@ -72,6 +73,25 @@
 		window.open(url, '_blank');
 	};
 </script>
+
+<svelte:head>
+	<!-- OG meta tags -->
+	<meta property="og:title" content={name} />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={$page.url.toString()} />
+	<meta property="og:description" content={description} />
+	<meta property="og:image" content={`${$page.url.toString()}favicon.png`} />
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content={$page.url.toString()} />
+	<meta name="twitter:title" content={name} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={`${$page.url.toString()}favicon.png`} />
+
+	<title>{name}</title>
+	<meta name="description" content={description} />
+</svelte:head>
 
 <LightballCursor bind:this={lightballCursor} />
 <header
