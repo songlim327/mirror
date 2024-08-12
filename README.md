@@ -68,6 +68,14 @@ export const config: Record<string, string> = {
 } as const;
 ```
 
+### Google Analytics 4
+
+If you wish to use Google Analytics on your website, copy `.env.example` and rename it to `.env`. Add the id to the file as follows:
+
+```env
+GA4=<your-GA4-ID>
+```
+
 ## Package used 📦
 
 | Packages               |
