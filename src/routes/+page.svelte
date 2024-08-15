@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { toggleMode } from 'mode-watcher';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { page } from '$app/stores';
@@ -73,6 +74,20 @@
 	const openLink = (url: string) => {
 		window.open(url, '_blank');
 	};
+
+	// Google tag (gtag.js), apparently have issue passing variable in <svelte:head> script block
+	onMount(() => {
+		const script = document.createElement('script');
+		script.innerHTML = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '${PUBLIC_GA4}');
+        `;
+
+		document.head.appendChild(script);
+	});
 </script>
 
 <svelte:head>
@@ -92,15 +107,6 @@
 
 	<!-- Google tag (gtag.js) -->
 	<script async src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA4}`}></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() {
-			dataLayer.push(arguments);
-		}
-		gtag('js', new Date());
-
-		gtag('config', PUBLIC_GA4);
-	</script>
 
 	<title>{name}</title>
 	<meta name="description" content={description} />
